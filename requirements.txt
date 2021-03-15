@@ -1,2 +1,2 @@
-ROOT
-numpy
+ROOT==6.22.6
+numpy==1.19.2
