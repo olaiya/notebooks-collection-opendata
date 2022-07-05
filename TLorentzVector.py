@@ -17,6 +17,24 @@ class ThreeVector:
     def Mag2(self):
         return ((self.x * self.x) + (self.y * self.y) +  (self.z * self.z))
 
+    def Dot(self, other):
+        return (self.x*other.x + self.y*other.y + self.z*other.z)
+
+    def Perp2(self):
+        return self.x*self.x + self.y*self.y
+
+    def Perp(self):
+        return math.sqrt(self.Perp2())
+
+    def Pt(self):
+        return self.Perp()
+
+    def Phi(self):
+        if (self.x == 0.0 and self.y == 0.0):
+            return 0
+        else:
+            return math.atan2(self.y, self.x)
+
     def __add__(self, other):
         x = self.x + other.x
         y = self.y + other.y
@@ -42,6 +60,12 @@ class TLorentzVector:
 
     def SetT(self, t):
         self.fE = t
+
+    def Perp(self):
+        return self.fP.Perp()
+
+    def Pt(self):
+        return self.Perp()
     
     def Killer(self):
         pass
@@ -67,8 +91,21 @@ class TLorentzVector:
         else:
             return math.sqrt(mm)
 
+    def Phi(self):
+        return self.fP.Phi()
+
     def M(self):
         return self.Mag()
+
+    def Mt(self):
+        mm = self.Mt2();
+        if (mm < 0.0): 
+            return -1 * math.sqrt(-mm)
+        else :
+            return math.sqrt(mm)
+
+    def Mt2(self):
+        return self.E()*self.E() - self.fP.z*self.fP.z
 
     def __add__(self, other):
         fP = self.fP + other.fP
@@ -108,3 +145,9 @@ if __name__ == '__main__':
 
     myLV5 =  TLorentzVector()
     myLV5.SetPxPyPzE(5,6,7,8)
+    print('Pt is {}'.format(myT.Pt()))
+
+    newT = ThreeVector(1,2,3)
+    print('Pt is {}'.format(newT.Pt()))
+    print('Pt is {}'.format(myLV5.Pt()))
+    print(myLV5.Mt())
